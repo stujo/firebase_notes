@@ -98,8 +98,6 @@ function FullPageController($scope, $timeout, $location, $log, $rootScope, $rout
 
   $scope.change_screen_name = function () {
     $scope.my.screen_name = $scope.my.pending_screen_name;
-    $scope.my.room_name = null;
-    $location.path('/');
   };
 
   $scope.exit_screen_name = function () {
