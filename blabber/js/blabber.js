@@ -42,7 +42,7 @@ function FullPageController($scope, $timeout, $location, $log, $rootScope, $rout
 
   $scope.my = {room_name: '', screen_name: ''};
 
-  // Use location as our storage of current screen_name and room_name
+  // Use location as our storage of current room_name
   $rootScope.$on("$locationChangeSuccess", function (event, location) {
     $log.info("location changed to:" + location);
     $timeout(function () {
@@ -98,20 +98,23 @@ function FullPageController($scope, $timeout, $location, $log, $rootScope, $rout
 
   $scope.change_screen_name = function () {
     $scope.my.screen_name = $scope.my.pending_screen_name;
+    $scope.my.room_name = null;
+    $location.path('/');
   };
 
   $scope.exit_screen_name = function () {
     $scope.my.screen_name = null;
+    $scope.my.room_name = null;
     $location.path('/');
   };
 
   $scope.change_room_name = function () {
-    $scope.my.room_name = $scope.my.pending_room_name;
-    $location.path('/in/' + $scope.my.room_name);
+    $location.path('/in/' + $scope.my.pending_room_name);
   };
 
   $scope.exit_room_name = function () {
     $scope.my.room_name = null;
+    $scope.my.pending_room_name = null;
     $location.path('/');
   };
 

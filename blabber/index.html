@@ -46,7 +46,7 @@
                             </div>
 
                             <div ng-if="my.screen_name">
-                                Blabbing as {{my.screen_name}}
+                                Blabbing as <span ng-bind="my.screen_name"></span>
                                 <button type="button" ng-click="exit_screen_name()"
                                         class="button-xsmall pure-button">
                                     Change!
@@ -71,7 +71,7 @@
                                 </div>
 
                                 <div ng-if="my.room_name">
-                                    Blabbing in {{my.room_name}}
+                                    Blabbing in <span ng-bind="my.room_name"></span>
                                     <button type="button" ng-click="exit_room_name()"
                                             class="button-xsmall pure-button">
                                         Leave!
@@ -95,8 +95,8 @@
                 </form>
                 <div class="blabber__chat">
                     <div class="blabber__message" ng-repeat="message in chat.messages">
-                        <span class="blabber__screen_name">{{message.screen_name}}</span>
-                        <span class="blabber__content">{{message.content}}</span>
+                        <span class="blabber__screen_name" ng-bind="message.screen_name"></span>
+                        <span class="blabber__content" ng-bind="message.content"></span>
                     </div>
                     <div ng-hide="chat.messages.length">No blabs yet!</div>
                 </div>
