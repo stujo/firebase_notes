@@ -1,25 +1,22 @@
 <!doctype html>
-<html lang="en" ng-app="BlabberApp">
+<html lang="en" ng-app="BlabberApp" ng-controller="FullPageController">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
           content="Open chatrooms">
-    <title>Blabber</title>
+    <title>Blabber {{my.screen_name}} {{my.room_name}}</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure.css">
     <link rel="stylesheet" href="css/blabber.css">
 
-
     <!--[if lte IE 8]>
-    <link rel="stylesheet" href="css/layouts/side-menu-old-ie.css">
+    <link rel="stylesheet" href="css/layouts/blabber-old-ie.css">
     <![endif]-->
     <!--[if gt IE 8]><!-->
-    <link rel="stylesheet" href="css/layouts/side-menu.css">
+    <link rel="stylesheet" href="css/layouts/blabber.css">
     <!--<![endif]-->
-
-
 </head>
-<body ng-controller="UserContextController">
+<body>
 
 <div id="layout">
 
@@ -104,11 +101,18 @@
                     <div ng-hide="chat.messages.length">No blabs yet!</div>
                 </div>
             </div>
+
+            <div>
+                <div ng-view=""></div>
+            </div>
+
+
         </div>
     </div>
 </div>
 <script src="https://cdn.firebase.com/js/client/1.0.17/firebase.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-route.js"></script>
 
 <script src="js/blabber.js"></script>
 </body>
