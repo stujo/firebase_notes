@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en" ng-app="BlabberApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+          content="Open chatrooms">
+    <title>Blabber</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure.css">
+    <link rel="stylesheet" href="css/blabber.css">
+
+
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="css/layouts/side-menu-old-ie.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="css/layouts/side-menu.css">
+    <!--<![endif]-->
+
+
+</head>
+<body ng-controller="UserContextController">
+
+<div id="layout">
+
+    <div id="main">
+        <div class="header">
+            <h1>Blabber</h1>
+
+            <h2>Blab about stuff</h2>
+        </div>
+
+        <div class="content">
+            <h2 class="content-subhead">You and Where and Blab!</h2>
+
+
+            <div class="pure-g">
+                <div class="pure-u-12-24">
+                    <form class="pure-form">
+                        <fieldset>
+                            <div ng-if="!my.screen_name">
+                                <input type="text" ng-model="my.pending_screen_name" id="screen_name"
+                                       blab-focus-when-falsy="my.screen_name"
+                                       placeholder="Enter Screen Name">
+                                <button type="submit" ng-disabled="!my.pending_screen_name"
+                                        ng-click="change_screen_name()"
+                                        class="pure-button pure-button-primary">Next
+                                </button>
+                            </div>
+
+                            <div ng-if="my.screen_name">
+                                Blabbing as {{my.screen_name}}
+                                <button type="button" ng-click="exit_screen_name()"
+                                        class="button-xsmall pure-button">
+                                    Change!
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
+
+                </div>
+                <div class="pure-u-12-24">
+                    <div ng-if="my.screen_name">
+                        <form class="pure-form">
+                            <fieldset>
+                                <div ng-if="!my.room_name">
+                                    <input type="text" ng-model="my.pending_room_name"
+                                           blab-focus-when-falsy="my.room_name"
+                                           placeholder="Enter Room Name">
+                                    <button type="submit" ng-click="change_room_name()"
+                                            class="pure-button pure-button-primary">
+                                        Go!
+                                    </button>
+                                </div>
+
+                                <div ng-if="my.room_name">
+                                    Blabbing in {{my.room_name}}
+                                    <button type="button" ng-click="exit_room_name()"
+                                            class="button-xsmall pure-button">
+                                        Leave!
+                                    </button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div ng-if="my.room_name && my.screen_name">
+                <form class="pure-form">
+                    <fieldset>
+                        <input type="text" ng-model="my.pending_message" blab-focus-when-falsy="my.pending_message"
+                               placeholder="Blab Something!">
+                        <button type="submit" ng-click="blab()" class="pure-button pure-button-primary">Blab!
+                        </button>
+                    </fieldset>
+                </form>
+                <div class="blabber__chat">
+                    <div class="blabber__message" ng-repeat="message in chat.messages">
+                        <span class="blabber__screen_name">{{message.screen_name}}</span>
+                        <span class="blabber__content">{{message.content}}</span>
+                    </div>
+                    <div ng-hide="chat.messages.length">No blabs yet!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.firebase.com/js/client/1.0.17/firebase.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.js"></script>
+
+<script src="js/blabber.js"></script>
+</body>
+</html>

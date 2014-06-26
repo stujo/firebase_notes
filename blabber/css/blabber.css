@@ -1,0 +1,40 @@
+.blabber__chat
+{
+}
+
+.blabber__message
+{
+
+
+}
+
+.blabber__message
+{
+
+
+}
+
+.blabber__screen_name
+{
+  font-weight: bold;
+
+}
+.blabber__screen_name:after
+{
+    content: ':';
+}
+
+.blabber__content
+{
+
+
+}
+
+
+.button-small {
+    font-size: 85%;
+}
+
+.button-xsmall {
+    font-size: 70%;
+}
