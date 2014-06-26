@@ -5,7 +5,7 @@ Stujo's Firebase Notes
 
 #Examples
 
-* [Blabber Game](blabber/index.html)
+* [Blabber](blabber/index.html) - The wild west of chat
 
 #Comments and Suggestions
 
