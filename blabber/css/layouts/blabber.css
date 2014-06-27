@@ -8,19 +8,6 @@ body {
 }
 
 /*
-Add transition to containers so they can push in and out.
-*/
-#layout,
-#menu,
-.menu-link {
-    -webkit-transition: all 0.2s ease-out;
-    -moz-transition: all 0.2s ease-out;
-    -ms-transition: all 0.2s ease-out;
-    -o-transition: all 0.2s ease-out;
-    transition: all 0.2s ease-out;
-}
-
-/*
 This is the parent `<div>` that contains the menu and the content area.
 */
 #layout {
@@ -33,17 +20,16 @@ The content `<div>` is where all your content goes.
 */
 .content {
     margin: 0 auto;
-    padding: 0 2em;
+    padding: 1em 1em;
     max-width: 800px;
     margin-bottom: 50px;
-    line-height: 1.6em;
 }
 
 .header {
     margin: 0;
     color: #333;
     text-align: center;
-    padding: 2.5em 2em 0;
+    padding: 1.5em 2em 0;
     border-bottom: 1px solid #eee;
 }
 
@@ -64,20 +50,4 @@ The content `<div>` is where all your content goes.
     margin: 50px 0 20px 0;
     font-weight: 300;
     color: #888;
-}
-
-
-/* -- Responsive Styles (Media Queries) ------------------------------------- */
-
-/*
-Hides the menu at `48em`, but modify this based on your app's needs.
-*/
-@media (min-width: 48em) {
-
-    .header,
-    .content {
-        padding-left: 2em;
-        padding-right: 2em;
-    }
-
 }

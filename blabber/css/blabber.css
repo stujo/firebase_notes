@@ -1,35 +1,32 @@
-.blabber__chat
-{
+.blabber__chat {
 }
 
-.blabber__message
-{
-
-
+.blabber__message {
+    background-color: #dddddd;
+    padding: 5px 2px;
 }
 
-.blabber__message
-{
-
-
+.blabber__message--odd {
+    background-color: #eeeeee;
 }
 
-.blabber__screen_name
-{
-  font-weight: bold;
-
-}
-.blabber__screen_name:after
-{
-    content: ':';
+.blabber__screen_name, .blabber__room_name {
+    font-weight: bold;
 }
 
-.blabber__content
-{
+.blabber__change_screen_name, .blabber__change_room_name {
+    width: 98%;
+    margin: 5px auto;
+    display: block;
+}
 
+.blabber__content {
 
 }
 
+.blabber__content:before {
+    content: ': ';
+}
 
 .button-small {
     font-size: 85%;
@@ -37,4 +34,42 @@
 
 .button-xsmall {
     font-size: 70%;
+    margin: 0 0;
+}
+
+.blabber__chat__container {
+    border: 2px solid #eeeeee;
+    border-radius: 3px;
+    padding: 5px;
+    margin: 5px 0px;
+}
+
+form.pure-form.blabber__inlineform button {
+    margin: 0;
+}
+
+form.pure-form.blabber__inlineform input {
+    margin: 0;
+}
+
+form.pure-form.blabber__inlineform fieldset {
+    margin: 0;
+    padding: 0;
+}
+
+/* Keep our form on a single line */
+@media only screen and (max-width: 480px) {
+    form.blabber__inlineform button {
+        margin: 0 0 0.6em 0;
+    }
+
+    form.blabber__inlineform input {
+        margin: 0 0 0.6em 0;
+    }
+}
+
+input#blabber__pending_message
+{
+    width: 100%;
+    display: block;
 }

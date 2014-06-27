@@ -15,6 +15,13 @@
     <!--[if gt IE 8]><!-->
     <link rel="stylesheet" href="css/layouts/blabber.css">
     <!--<![endif]-->
+
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-old-ie-min.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css">
+    <!--<![endif]-->
 </head>
 <body>
 
@@ -25,88 +32,87 @@
             <h1>Blabber</h1>
 
             <h2>Blab about stuff</h2>
+
+            <h2>It's anonymous and completely public</h2>
         </div>
-
         <div class="content">
-            <h2 class="content-subhead">You and Where and Blab!</h2>
+            <div ng-cloak class="ng-cloak">
+                <div class="pure-g">
+                    <div class="pure-u-1 pure-u-sm-1-2">
+                        <div ng-if="!my.screen_name">
+                            <form class="pure-form blabber__inlineform">
+                                <fieldset>
+                                    <input type="text" ng-model="my.pending_screen_name" id="screen_name"
+                                           blab-focus-when-falsy="my.screen_name"
+                                           ng-minlength="2"
+                                           ng-maxlength="30"
+                                           ng-pattern="validScreenName"
+                                           placeholder="Enter Screen Name"
+                                           required>
+                                    <button type="submit" ng-disabled="!my.pending_screen_name"
+                                            ng-click="change_screen_name()"
+                                            class="pure-button pure-button-primary">Next
+                                    </button>
 
+                                </fieldset>
+                            </form>
+                        </div>
+                        <div ng-if="my.screen_name">
+                            <button type="button" ng-click="exit_screen_name()"
+                                    class="pure-button blabber__change_screen_name">
+                                Blabbing as <span class="blabber__screen_name" ng-bind="my.screen_name"></span> [Change]
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pure-u-1 pure-u-sm-1-2">
+                        <div ng-if="my.screen_name">
+                            <div ng-if="!my.room_name">
+                                <form class="pure-form blabber__inlineform">
+                                    <fieldset>
+                                        <input type="text" ng-model="my.pending_room_name"
+                                               blab-focus-when-falsy="my.room_name"
+                                               ng-minlength="4"
+                                               ng-maxlength="32"
+                                               ng-pattern="validRoomName"
+                                               placeholder="Enter Room Name" required>
+                                        <button type="submit" ng-click="change_room_name()"
+                                                class="pure-button pure-button-primary">
+                                            Go!
+                                        </button>
 
-            <div class="pure-g">
-                <div class="pure-u-12-24">
-                    <form class="pure-form">
-                        <fieldset>
-                            <div ng-if="!my.screen_name">
-                                <input type="text" ng-model="my.pending_screen_name" id="screen_name"
-                                       blab-focus-when-falsy="my.screen_name"
-                                       placeholder="Enter Screen Name">
-                                <button type="submit" ng-disabled="!my.pending_screen_name"
-                                        ng-click="change_screen_name()"
-                                        class="pure-button pure-button-primary">Next
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div ng-if="my.room_name">
+                                <button type="button" ng-click="exit_room_name()"
+                                        class="pure-button blabber__change_room_name">
+                                    Blabbing in <span class="blabber__room_name" ng-bind="my.room_name"></span> [Leave]
                                 </button>
                             </div>
-
-                            <div ng-if="my.screen_name">
-                                Blabbing as <span ng-bind="my.screen_name"></span>
-                                <button type="button" ng-click="exit_screen_name()"
-                                        class="button-xsmall pure-button">
-                                    Change!
-                                </button>
-                            </div>
-                        </fieldset>
-                    </form>
-
-                </div>
-                <div class="pure-u-12-24">
-                    <div ng-if="my.screen_name">
-                        <form class="pure-form">
-                            <fieldset>
-                                <div ng-if="!my.room_name">
-                                    <input type="text" ng-model="my.pending_room_name"
-                                           blab-focus-when-falsy="my.room_name"
-                                           placeholder="Enter Room Name">
-                                    <button type="submit" ng-click="change_room_name()"
-                                            class="pure-button pure-button-primary">
-                                        Go!
-                                    </button>
-                                </div>
-
-                                <div ng-if="my.room_name">
-                                    Blabbing in <span ng-bind="my.room_name"></span>
-                                    <button type="button" ng-click="exit_room_name()"
-                                            class="button-xsmall pure-button">
-                                        Leave!
-                                    </button>
-                                </div>
-                            </fieldset>
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </div>
 
 
-            <div ng-if="my.room_name && my.screen_name">
-                <form class="pure-form">
-                    <fieldset>
-                        <input type="text" ng-model="my.pending_message" blab-focus-when-falsy="my.pending_message"
+                <div class="blabber__chat__container" ng-if="my.room_name && my.screen_name">
+                    <form class="pure-form blabber__inlineform" ng-submit="blab()">
+                        <input type="text" id="blabber__pending_message" ng-model="my.pending_message"
+                               blab-focus-when-falsy="my.pending_message"
+                               ng-minlength="1"
+                               ng-maxlength="140"
+                               ng-pattern="validBlabMessage"
                                placeholder="Blab Something!">
-                        <button type="submit" ng-click="blab()" class="pure-button pure-button-primary">Blab!
-                        </button>
-                    </fieldset>
-                </form>
-                <div class="blabber__chat">
-                    <div class="blabber__message" ng-repeat="message in chat.messages">
-                        <span class="blabber__screen_name" ng-bind="message.screen_name"></span>
-                        <span class="blabber__content" ng-bind="message.content"></span>
+                    </form>
+                    <div class="blabber__chat">
+                        <div class="blabber__message" ng-class-odd="'blabber__message--odd'"
+                             ng-repeat="message in chat.messages">
+                            <span class="blabber__screen_name" ng-bind="message.screen_name"></span>
+                            <span class="blabber__content" ng-bind="message.content"></span>
+                        </div>
+                        <div ng-hide="chat.messages.length">No blabs yet!</div>
                     </div>
-                    <div ng-hide="chat.messages.length">No blabs yet!</div>
                 </div>
             </div>
-
-            <div>
-                <div ng-view=""></div>
-            </div>
-
-
         </div>
     </div>
 </div>

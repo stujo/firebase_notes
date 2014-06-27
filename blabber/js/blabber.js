@@ -30,15 +30,42 @@ BlabberApp.config(['$routeProvider',
       });
   }]);
 
+BlabberApp.factory('userStateService', ['$rootScope', function ($rootScope) {
+
+  var service = {
+
+    model: {
+      version: 1.0,
+      screen_name: '',
+      room_name: '',
+      room_favourites: []
+    },
+
+    SaveState: function () {
+      sessionStorage.userService = angular.toJson(service.model);
+    },
+
+    RestoreState: function () {
+      service.model = angular.fromJson(sessionStorage.userService);
+    }
+  }
+
+  $rootScope.$on("savestate", service.SaveState);
+  $rootScope.$on("restorestate", service.RestoreState);
+
+  return service;
+}]);
 
 function FullPageController($scope, $timeout, $location, $log, $rootScope, $route, $routeParams) {
-
 
   var allChatsRef = new Firebase("https://blabber.firebaseio.com/chats");
   var chatRef = null;
   var messagesRef = null;
   var lastMessagesQuery = null;
 
+  $scope.validScreenName = /^[-_A-Za-z\d]{2,30}$/;
+  $scope.validRoomName = /^[-_A-Za-z\d]{4,32}$/;
+  $scope.validBlabMessage = /^.{1,140}$/;
 
   $scope.my = {room_name: '', screen_name: ''};
 
@@ -51,14 +78,12 @@ function FullPageController($scope, $timeout, $location, $log, $rootScope, $rout
   });
 
   function refreshChatRoom(room_name) {
-    if ($scope.my.screen_name) {
-      if (room_name) {
-        $scope.my.room_name = room_name;
-      }
-      else {
-        // Log out of room_name
-        $scope.my.room_name = '';
-      }
+    if (room_name && room_name.match($scope.validRoomName)) {
+      $scope.my.pending_room_name = $scope.my.room_name = room_name;
+    }
+    else {
+      // Log out of room_name
+      $scope.my.pending_room_name = $scope.my.room_name = '';
     }
 
     $log.info('Current chat: as(' + $scope.my.screen_name + ") in(" + $scope.my.room_name + ")");
@@ -66,7 +91,7 @@ function FullPageController($scope, $timeout, $location, $log, $rootScope, $rout
   }
 
   $scope.$watch("my.room_name", function (newValue, oldValue) {
-    if (newValue) {
+    if (newValue && newValue.match($scope.validRoomName)) {
       console.log(newValue);
       chatRef = allChatsRef.child(newValue);
       messagesRef = chatRef.child('messages');
@@ -97,7 +122,10 @@ function FullPageController($scope, $timeout, $location, $log, $rootScope, $rout
   });
 
   $scope.change_screen_name = function () {
-    $scope.my.screen_name = $scope.my.pending_screen_name;
+    if ($scope.my.pending_screen_name
+      && $scope.my.pending_screen_name.match($scope.validScreenName)) {
+      $scope.my.screen_name = $scope.my.pending_screen_name;
+    }
   };
 
   $scope.exit_screen_name = function () {
@@ -107,7 +135,10 @@ function FullPageController($scope, $timeout, $location, $log, $rootScope, $rout
   };
 
   $scope.change_room_name = function () {
-    $location.path('/in/' + $scope.my.pending_room_name);
+    if ($scope.my.pending_room_name
+      && $scope.my.pending_room_name.match($scope.validRoomName)) {
+      $location.path('/in/' + $scope.my.pending_room_name);
+    }
   };
 
   $scope.exit_room_name = function () {
@@ -118,22 +149,25 @@ function FullPageController($scope, $timeout, $location, $log, $rootScope, $rout
 
 
   $scope.blab = function () {
-
-    console.log($routeParams);
-
-
     var message = $scope.my.pending_message;
     var screen_name = $scope.my.screen_name;
 
-    if (messagesRef && message && screen_name) {
+    if (screen_name
+      && screen_name.match($scope.validScreenName)) {
 
-      messagesRef.push(
-        {
-          screen_name: screen_name,
-          content: message
+      if (message
+        && message.match($scope.validBlabMessage)) {
+        if (messagesRef && message) {
+
+          messagesRef.push(
+            {
+              screen_name: screen_name,
+              content: message
+            }
+          );
+          $scope.my.pending_message = '';
         }
-      );
-      $scope.my.pending_message = '';
+      }
     }
   };
 
