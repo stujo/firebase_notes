@@ -95,6 +95,9 @@
 
 
                 <div class="blabber__chat__container" ng-if="my.room_name && my.screen_name">
+
+                    <div class="blabber__chat_share">Invite people to this room: <a href="{{chat.share}}">{{chat.share}}</a></div>
+
                     <form class="pure-form blabber__inlineform" ng-submit="blab()">
                         <input type="text" id="blabber__pending_message" ng-model="my.pending_message"
                                blab-focus-when-falsy="my.pending_message"
@@ -109,7 +112,11 @@
                             <span class="blabber__screen_name" ng-bind="message.screen_name"></span>
                             <span class="blabber__content" ng-bind="message.content"></span>
                         </div>
-                        <div ng-hide="chat.messages.length">No blabs yet!</div>
+                        <div ng-hide="chat.messages.length"  class="blabber__message" ng-class-odd="'blabber__message--odd'">
+                            <span class="blabber__screen_name">BlabberBot</span>
+                            <span class="blabber__content">No blabs yet!</span>
+
+                        </div>
                     </div>
                 </div>
             </div>

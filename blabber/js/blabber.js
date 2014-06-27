@@ -56,7 +56,7 @@ BlabberApp.factory('userStateService', ['$rootScope', function ($rootScope) {
   return service;
 }]);
 
-function FullPageController($scope, $timeout, $location, $log, $rootScope, $route, $routeParams) {
+function FullPageController($scope, $timeout, $location, $rootScope, $route, $routeParams) {
 
   var allChatsRef = new Firebase("https://blabber.firebaseio.com/chats");
   var chatRef = null;
@@ -71,7 +71,6 @@ function FullPageController($scope, $timeout, $location, $log, $rootScope, $rout
 
   // Use location as our storage of current room_name
   $rootScope.$on("$locationChangeSuccess", function (event, location) {
-    $log.info("location changed to:" + location);
     $timeout(function () {
       refreshChatRoom($routeParams.room_name);
     });
@@ -85,22 +84,21 @@ function FullPageController($scope, $timeout, $location, $log, $rootScope, $rout
       // Log out of room_name
       $scope.my.pending_room_name = $scope.my.room_name = '';
     }
-
-    $log.info('Current chat: as(' + $scope.my.screen_name + ") in(" + $scope.my.room_name + ")");
     return true;
   }
 
-  $scope.$watch("my.room_name", function (newValue, oldValue) {
-    if (newValue && newValue.match($scope.validRoomName)) {
-      console.log(newValue);
-      chatRef = allChatsRef.child(newValue);
+  $scope.$watch("my.room_name", function (newRoomName, _) {
+    if (newRoomName && newRoomName.match($scope.validRoomName)) {
+      newRoomName = newRoomName.toLowerCase();
+      chatRef = allChatsRef.child(newRoomName);
       messagesRef = chatRef.child('messages');
       lastMessagesQuery = messagesRef.endAt().limit(10);
 
       $scope.chat = {
-        room_name: newValue,
+        room_name: newRoomName,
         started_by: $scope.my.screen_name,
-        messages: []
+        messages: [],
+        share: window.location.href
       };
 
       lastMessagesQuery.on('value', function (ss) {
@@ -135,10 +133,13 @@ function FullPageController($scope, $timeout, $location, $log, $rootScope, $rout
   };
 
   $scope.change_room_name = function () {
-    if ($scope.my.pending_room_name
-      && $scope.my.pending_room_name.match($scope.validRoomName)) {
-      $location.path('/in/' + $scope.my.pending_room_name);
+    if ($scope.my.pending_room_name) {
+      $scope.my.pending_room_name = $scope.my.pending_room_name.toLowerCase();
+      if ($scope.my.pending_room_name.match($scope.validRoomName)) {
+        $location.path('/in/' + $scope.my.pending_room_name);
+      }
     }
+
   };
 
   $scope.exit_room_name = function () {

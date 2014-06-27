@@ -16,7 +16,7 @@
 
 .blabber__change_screen_name, .blabber__change_room_name {
     width: 98%;
-    margin: 5px auto;
+    margin: 0px auto;
     display: block;
 }
 
@@ -72,4 +72,9 @@ input#blabber__pending_message
 {
     width: 100%;
     display: block;
+}
+
+.blabber__chat_share
+{
+    padding: 5px;
 }
